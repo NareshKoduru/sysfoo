@@ -1,27 +1,12 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'mvn compile'
-      }
+    agent {
+        docker {image 'maven:3.6.3-jdk-11-slim' }
     }
-
-    stage('Unit Test') {
-      steps {
-        sh 'mvn clean test'
-      }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'mvn -version'
+            }
+        }
     }
-
-    stage('Package') {
-      steps {
-        sh 'mvn package -DskipTests'
-        archiveArtifacts 'target/*.war'
-      }
-    }
-
-  }
-  tools {
-    maven 'Default'
-  }
 }
