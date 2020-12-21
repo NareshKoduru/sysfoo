@@ -1,30 +1,27 @@
-pipeline{
-
-  agent any 
-
-  tools{
-    maven 'Default'
-  }
-
-  stages{ 
-    
-    stage('Build'){
-      steps{
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
         sh 'mvn compile'
       }
     }
 
-    stage('Unit Test'){
-      steps{
+    stage('Unit Test') {
+      steps {
         sh 'mvn clean test'
       }
     }
 
-    stage('Package'){
-      steps{
-       sh 'mvn package -DskipTests'
+    stage('Package') {
+      steps {
+        sh 'mvn package -DskipTests'
+        archiveArtifacts 'target/*.war'
       }
     }
-  }
 
+  }
+  tools {
+    maven 'Default'
+  }
 }
